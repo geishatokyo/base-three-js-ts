@@ -27,6 +27,9 @@ abstract class AppWrapper {
   constructor(type: number) {
     this.type = type;
   }
+  setInstall(installCall: () => void): void {
+    uiController.installClick = installCall;
+  }
   abstract windowResize(): { width: number; height: number };
   abstract bindEvent(): void;
   async launchApp(): Promise<void> {

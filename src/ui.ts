@@ -95,26 +95,7 @@ class UiController {
     document.getElementById("loading").setAttribute("visibility", "hidden");
   }
   installClick(): void {
-    if (typeof FbPlayableAd !== "undefined")
-      // facebook
-      FbPlayableAd.onCTAClick();
-    else if (typeof ExitApi !== "undefined")
-      // google
-      ExitApi.exit();
-    else if (typeof dapi !== "undefined") {
-      // ironsource
-      dapi.openStoreUrl();
-    } else if (typeof mraid !== "undefined") {
-      // applovin
-      const u = navigator.userAgent;
-      const isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
-      // var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-      if (isAndroid)
-        mraid.open(
-          "https://play.google.com/store/apps/details?id=com.mix.color.paint.game"
-        );
-      else mraid.open("https://apps.apple.com/app/id1492035864");
-    } else alert("not in facebook or google-ads or applovin");
+    alert("not in facebook or google-ads or applovin");
   }
 }
 
