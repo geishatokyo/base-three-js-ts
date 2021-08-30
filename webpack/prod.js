@@ -18,14 +18,13 @@ module.exports = merge(base, {
   module: {
     rules: [
       {
-        test: /\.(png|jpg|gif|glb|ogg|mp3|glsl)$/i,
-        use: [
-          {
-            loader: "url-loader",
-            options: {},
-          },
-        ],
+        test: /\.(png|jpg|gif|glb|ogg|mp3)$/i,
+        type: 'asset/inline'
       },
+      {
+        test: /\.glsl/i,
+        type: 'asset/source'
+      }
     ],
   },
   plugins: [

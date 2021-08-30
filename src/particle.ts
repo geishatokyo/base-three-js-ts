@@ -21,8 +21,8 @@ export class Particle extends BaseObject {
   async init(): Promise<void> {
     this.geometry = new THREE.BufferGeometry();
     const particleTexture = await loader.loadTexture(particleImage);
-    const fragShader = await loader.loadText(fragGlsl);
-    const vertexShader = await loader.loadText(vertexGlsl);
+    const fragShader = fragGlsl;
+    const vertexShader = vertexGlsl;
     this.material = new THREE.PointsMaterial({
       size: 0.3,
       transparent: true,

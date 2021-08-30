@@ -10,21 +10,17 @@ module.exports = merge(base, {
   module: {
     rules: [
       {
-        test: /\.(png|jpg|gif|glb|glsl)$/i,
-        use: [
-          {
-            loader: "file-loader",
-            options: { name: "[path][name].[ext]" },
-          },
-        ],
+        test: /\.(png|jpg|gif|glb|ogg|mp3)$/i,
+        type: 'asset/resource'
       },
+      {
+        test: /\.glsl/i,
+        type: 'asset/source'
+      }
     ],
   },
   devServer: {
-    contentBase: path.join(process.cwd(), "dist"),
-    compress: true,
     historyApiFallback: true,
-    inline: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
