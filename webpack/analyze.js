@@ -8,14 +8,13 @@ module.exports = merge(base, {
   module: {
     rules: [
       {
-        test: /\.(png|jpg|gif|glb|glsl)$/i,
-        use: [
-          {
-            loader: "url-loader",
-            options: {},
-          },
-        ],
+        test: /\.(png|jpg|gif|glb|ogg|mp3)$/i,
+        type: 'asset/resource'
       },
+      {
+        test: /\.glsl/i,
+        type: 'asset/source'
+      }
     ],
   },
   plugins: [new BundleAnalyzerPlugin()],
