@@ -21,6 +21,7 @@
     "webpack-dev-server": "^4.0.0"
   },
   "dependencies": {
+    "@flyover/box2d": "git+https://github.com/flyover/box2d.ts.git",
     "ammo.js": "github:kripken/ammo.js",
     "css-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.2",
