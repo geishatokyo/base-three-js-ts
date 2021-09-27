@@ -8,6 +8,7 @@ import { uiController } from "./ui";
 import { Physics2D } from "./physics2d";
 import { Cube } from "./cube";
 import Ammo from "ammo.js";
+import * as b2 from "@flyover/box2d";
 import { Particle } from "./particle";
 
 export class App {
@@ -62,9 +63,14 @@ export class App {
     await this.physicsWorld.init();
     uiController.hideLoading();
     //const shape = new Ammo.btBoxShape(new Ammo.btVector3(1, 1, 1));
+    const dynamicBox: b2.PolygonShape = new b2.PolygonShape();
+    dynamicBox.SetAsBox(1, 1);
     this.physicsWorld.createRigidBody(
-      this.cube.object
-      //shape,
+      this.cube.object,
+      dynamicBox,
+      b2.BodyType.b2_dynamicBody,
+      new b2.Vec2(0, 4),
+      0
       //1,
       //new THREE.Vector3(1, 1, 1),
       //new THREE.Quaternion()

@@ -17,19 +17,26 @@ export class Physics2D {
     groundBox.SetAsBox(50, 10);
     this.groundBody.CreateFixture(groundBox, 0);
   }
-  createRigidBody(renderObject: THREE.Object3D): void {
+  createRigidBody(
+    renderObject: THREE.Object3D,
+    dynamicBox: b2.PolygonShape,
+    type = 0,
+    position: b2.Vec2,
+    angle: number,
+    density = 1,
+    friction = 0.3
+  ): void {
     const bodyDef: b2.BodyDef = new b2.BodyDef();
-    bodyDef.type = b2.BodyType.b2_dynamicBody;
-    bodyDef.position.Set(0, 4);
+    bodyDef.type = type;
+    bodyDef.position.Copy(position);
+    bodyDef.angle = angle;
     const body: b2.Body = this.world.CreateBody(bodyDef);
 
-    const dynamicBox: b2.PolygonShape = new b2.PolygonShape();
-    dynamicBox.SetAsBox(1, 1);
     const fixtureDef: b2.FixtureDef = new b2.FixtureDef();
     fixtureDef.shape = dynamicBox;
 
-    fixtureDef.density = 1;
-    fixtureDef.friction = 0.3;
+    fixtureDef.density = density;
+    fixtureDef.friction = friction;
     const fixture: b2.Fixture = body.CreateFixture(fixtureDef);
 
     renderObject.userData.physicsBody = body;
