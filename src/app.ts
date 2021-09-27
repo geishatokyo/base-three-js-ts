@@ -10,6 +10,7 @@ import { Cube } from "./cube";
 import Ammo from "ammo.js";
 import * as b2 from "@flyover/box2d";
 import { Particle } from "./particle";
+import { Physics } from "./physics";
 
 export class App {
   renderer: THREE.WebGLRenderer;
@@ -18,7 +19,7 @@ export class App {
   clock = new THREE.Clock();
   needResize = false;
   state = 0;
-  physicsWorld: Physics2D;
+  physicsWorld: Physics;
   dough: Dough;
   particle: Particle;
   size = { width: 0, height: 0 };
@@ -43,7 +44,7 @@ export class App {
     this.scene.add(ambientLight);
 
     //physics
-    this.physicsWorld = new Physics2D();
+    this.physicsWorld = new Physics();
 
     // object
     this.dough = new Dough(this.scene, this.physicsWorld);
@@ -62,18 +63,19 @@ export class App {
     ]);
     await this.physicsWorld.init();
     uiController.hideLoading();
-    //const shape = new Ammo.btBoxShape(new Ammo.btVector3(1, 1, 1));
+    const shape = new Ammo.btBoxShape(new Ammo.btVector3(1, 1, 1));
     const dynamicBox: b2.PolygonShape = new b2.PolygonShape();
     dynamicBox.SetAsBox(1, 1);
     this.physicsWorld.createRigidBody(
       this.cube.object,
-      dynamicBox,
-      b2.BodyType.b2_dynamicBody,
-      new b2.Vec2(0, 4),
-      0
-      //1,
-      //new THREE.Vector3(1, 1, 1),
-      //new THREE.Quaternion()
+      shape,
+      //dynamicBox,
+      //b2.BodyType.b2_dynamicBody,
+      //new b2.Vec2(0, 4),
+      //0
+      1,
+      new THREE.Vector3(1, 1, 1),
+      new THREE.Quaternion()
     );
   }
   render(): void {

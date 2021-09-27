@@ -7,6 +7,7 @@ import particleImage from "./assets/png/confetti.png";
 import fragGlsl from "./assets/fragshader.glsl";
 import vertexGlsl from "./assets/vertexshader.glsl";
 import * as loader from "./utils/resource-manager";
+import { Physics } from "./physics";
 
 export class Particle extends BaseObject {
   object: THREE.Group;
@@ -15,7 +16,7 @@ export class Particle extends BaseObject {
   material: THREE.PointsMaterial;
   pointList: THREE.Vector3[] = [];
   geometry: THREE.BufferGeometry;
-  constructor(mainScene: THREE.Scene, world: Physics2D) {
+  constructor(mainScene: THREE.Scene, world: Physics) {
     super(mainScene, world, "particle");
   }
   async init(): Promise<void> {

@@ -1,11 +1,12 @@
 import * as THREE from "three";
+import { Physics } from "./physics";
 import { Physics2D } from "./physics2d";
 
 export abstract class BaseObject {
   object: THREE.Group;
   mainScene: THREE.Scene;
-  physicsWorld: Physics2D;
-  constructor(mainScene: THREE.Scene, world: Physics2D, name: string) {
+  physicsWorld: Physics;
+  constructor(mainScene: THREE.Scene, world: Physics, name: string) {
     this.mainScene = mainScene;
     this.object = new THREE.Group();
     this.object.name = name;

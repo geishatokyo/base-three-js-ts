@@ -1,12 +1,13 @@
 import * as THREE from "three";
 
 import { BaseObject } from "./base-object";
+import { Physics } from "./physics";
 import { Physics2D } from "./physics2d";
 // import * as loader from './utils/resource-manager';
 
 export class Dough extends BaseObject {
   object: THREE.Group;
-  constructor(mainScene: THREE.Scene, world: Physics2D) {
+  constructor(mainScene: THREE.Scene, world: Physics) {
     super(mainScene, world, "dough");
   }
   async init(): Promise<void> {
