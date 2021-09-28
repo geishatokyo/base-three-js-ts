@@ -11,6 +11,7 @@ import Ammo from "ammo.js";
 import * as b2 from "@flyover/box2d";
 import { Particle } from "./particle";
 import { Physics } from "./physics";
+import { JellyMesh } from "./jelly-mesh";
 
 export class App {
   renderer: THREE.WebGLRenderer;
@@ -24,6 +25,7 @@ export class App {
   particle: Particle;
   size = { width: 0, height: 0 };
   cube: Cube;
+  jellyMesh: JellyMesh;
   constructor() {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -32,7 +34,7 @@ export class App {
     this.renderer.setClearColor(0x2f3c29, 1.0);
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(60, undefined, 0.3, 1000);
-    this.camera.position.set(0, 4, -3);
+    this.camera.position.set(0, 8, -6);
     this.camera.up.set(0, 1, 0);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -50,6 +52,14 @@ export class App {
     this.dough = new Dough(this.scene, this.physicsWorld);
     this.cube = new Cube(this.scene, this.physicsWorld);
     this.particle = new Particle(this.scene, this.physicsWorld);
+    const mesh = new THREE.Mesh(
+      new THREE.BoxBufferGeometry(1, 1, 1),
+      new THREE.MeshLambertMaterial({
+        color: 0xa45902,
+      })
+    );
+    mesh.position.set(-1, 5, 1);
+    this.jellyMesh = new JellyMesh(mesh, this.scene, this.physicsWorld);
   }
 
   async init(): Promise<void> {
@@ -57,24 +67,45 @@ export class App {
     controller.init();
     uiController.init();
     await Promise.all([
-      this.dough.init(),
-      this.cube.init(),
+      //this.dough.init(),
+      //this.cube.init(),
       this.particle.init(),
+      this.jellyMesh.init(),
     ]);
     await this.physicsWorld.init();
     uiController.hideLoading();
     const shape = new Ammo.btBoxShape(new Ammo.btVector3(1, 1, 1));
     const dynamicBox: b2.PolygonShape = new b2.PolygonShape();
     dynamicBox.SetAsBox(1, 1);
-    this.physicsWorld.createRigidBody(
-      this.cube.object,
+    const rigidbody = this.physicsWorld.createRigidBody(
+      this.jellyMesh.object,
       shape,
       //dynamicBox,
       //b2.BodyType.b2_dynamicBody,
       //new b2.Vec2(0, 4),
       //0
       1,
-      new THREE.Vector3(1, 1, 1),
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Quaternion()
+    );
+    rigidbody.applyImpulse(
+      new Ammo.btVector3(-1, 8, 1),
+      new Ammo.btVector3(0.1, 0.1, 0.6)
+    );
+    const ground = new THREE.Mesh(
+      new THREE.BoxGeometry(10, 0.1, 10),
+      new THREE.MeshLambertMaterial({
+        color: 0xffff00,
+        wireframe: true,
+      })
+    );
+    ground.position.set(0, -2, 0);
+    this.scene.add(ground);
+    this.physicsWorld.createRigidBody(
+      ground,
+      new Ammo.btBoxShape(new Ammo.btVector3(5, 0.05, 5)),
+      0,
+      new THREE.Vector3(0, -2, 0),
       new THREE.Quaternion()
     );
   }
@@ -86,9 +117,10 @@ export class App {
     }
     this.physicsWorld.updatePhysics(deltaTime);
     this.mainloop(deltaTime);
-    this.dough.update(deltaTime);
-    this.cube.update(deltaTime);
+    //this.dough.update(deltaTime);
+    //this.cube.update(deltaTime);
     this.particle.update(deltaTime);
+    this.jellyMesh.update(deltaTime);
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(() => this.render());
   }
